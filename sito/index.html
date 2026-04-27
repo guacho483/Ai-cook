@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chef AI · Assistente di Cucina</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="header-icon">🍳</div>
+    <div class="header-text">
+      <h1>Chef AI</h1>
+      <p>Assistente di Cucina</p>
+    </div>
+
+  </header>
+
+  <div id="messages">
+
+    <div class="welcome" id="welcomeBlock">
+      <div class="welcome-icon">🍽️</div>
+      <h2>Cosa cuciniamo oggi?</h2>
+      <p>Chiedi ricette, tecniche, abbinamenti o suggerimenti su qualsiasi ingrediente.</p>
+      <div class="welcome-chips">
+        <button class="chip" onclick="fillInput(this)">Ricetta pasta al pomodoro</button>
+        <button class="chip" onclick="fillInput(this)">Come fare il risotto perfetto?</button>
+        <button class="chip" onclick="fillInput(this)">Sostituto delle uova in pasticceria</button>
+        <button class="chip" onclick="fillInput(this)">Abbinamento vino e pesce</button>
+      </div>
+    </div>
+
+    <div id="typing">
+      <div class="ai-chip">
+        <div class="ai-avatar">🍳</div>
+        <span class="ai-name">Chef AI</span>
+      </div>
+      <div class="typing-bubble">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-bar">
+    <div class="input-box">
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Scrivi una domanda sulla cucina…"
+        autocomplete="off"
+      />
+      <button onclick="sendMessage()" id="sendBtn" aria-label="Invia">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"/>
+          <polyline points="5 12 12 5 19 12"/>
+        </svg>
+      </button>
+    </div>
+    <p class="hint">Premi <kbd>Enter</kbd> per inviare</p>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
