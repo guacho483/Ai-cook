@@ -1,10 +1,23 @@
+// =============================================================
+//  script.js  –  Ai-Cook  |  Logica frontend
+//
+//  *** CONFIGURAZIONE ***
+//  Cambia SERVER_URL con l'indirizzo IP della macchina server.
+//  Esempio: "http://192.168.1.15:5000"
+//  Se frontend e server girano sulla stessa macchina usa "http://localhost:5000"
+// =============================================================
+
+const SERVER_URL = "http://localhost:5000";  // ← CAMBIA CON L'IP DEL SERVER
+
+// =============================================================
+
 marked.setOptions({ breaks: true, gfm: true });
 
 const messagesContainer = document.getElementById('messages');
-const typingEl = document.getElementById('typing');
-const sendBtn = document.getElementById('sendBtn');
-const userInput = document.getElementById('userInput');
-const scrollBtn = document.getElementById('scrollBtn');
+const typingEl          = document.getElementById('typing');
+const sendBtn           = document.getElementById('sendBtn');
+const userInput         = document.getElementById('userInput');
+const scrollBtn         = document.getElementById('scrollBtn');
 
 /* ── Theme toggle ────────────────────────────────────────────────── */
 let isDark = true;
@@ -60,12 +73,19 @@ function sendMessage() {
     autoResize();
     setLoading(true);
 
-    fetch('https://api.example.com/ai', {
+    fetch(`${SERVER_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question })
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error(err.error || `Errore HTTP ${response.status}`);
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             setLoading(false);
             addMessage(data.answer, 'ai');
@@ -73,7 +93,10 @@ function sendMessage() {
         .catch(error => {
             console.error('Errore:', error);
             setLoading(false);
-            addMessage('Errore nella comunicazione con il servizio AI.', 'ai');
+            const msg = error.message.includes('Failed to fetch')
+                ? `Impossibile raggiungere il server (${SERVER_URL}). Verifica che il server sia avviato e che l'IP sia corretto.`
+                : `Errore: ${error.message}`;
+            addMessage(msg, 'ai');
         });
 }
 
@@ -95,7 +118,6 @@ function addMessage(text, sender) {
     if (sender === 'ai') {
         bubble.innerHTML = marked.parse(text);
     } else {
-        // preserve newlines from textarea
         bubble.innerHTML = text
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -105,7 +127,7 @@ function addMessage(text, sender) {
 
     const meta = document.createElement('span');
     meta.classList.add('meta');
-    const now = new Date();
+    const now  = new Date();
     const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
     meta.innerHTML = sender === 'user'
         ? `Tu <span class="meta-dot"></span> ${time}`
@@ -120,8 +142,8 @@ function addMessage(text, sender) {
 /* ── Loading ─────────────────────────────────────────────────────── */
 function setLoading(active) {
     typingEl.style.display = active ? 'flex' : 'none';
-    sendBtn.disabled = active;
-    userInput.disabled = active;
+    sendBtn.disabled        = active;
+    userInput.disabled      = active;
     if (active) scrollToBottom();
     else userInput.focus();
 }
