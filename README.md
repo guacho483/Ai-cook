@@ -9,22 +9,32 @@ Architettura su **3 macchine** collegate alla stessa rete locale.
 
 ```
 AI-COOK/
-├── frontend/          ← Macchina 1 (aperta nel browser)
+│
+├── README.md
+│
+├── frontend/                      ← Macchina 1
 │   ├── index.html
 │   ├── script.js
 │   └── style.css
 │
-├── server/            ← Macchina 2 (Mattia – server Flask + Ollama)
+├── server/                        ← Macchina 2 (tua parte)
 │   ├── server.py
 │   ├── config.py
 │   ├── rag.py
 │   ├── ollama_client.py
 │   └── requirements.txt
 │
-└── database/          ← Macchina 3 (pipeline PDF → MySQL)
+└── database/                      ← Macchina 3
     ├── dbbuild.sql
     ├── dbConnection.py
-    └── requirements.txt
+    ├── requirements.txt
+    ├── pipeline.log               (generato automaticamente)
+    ├── vs/
+    │   └── data/                  (generato da dbConnection.py – VectorStore Chroma)
+    ├── 79824327-La-Risotteria.pdf
+    ├── Cannella_SMO870_IT_Recipe_Cards.pdf
+    ├── libro-artusi.pdf
+    └── ti-va-un-antipasto.pdf
 ```
 
 ---
